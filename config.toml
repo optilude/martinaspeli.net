@@ -1,2 +1,7 @@
-theme = "Seven"
-theme = "ananke"
+theme = "anatole"
+
+[params]
+title = "Martin Aspeli"
+author = "Martin"
+description = ""
+profilePicture = "images/profile.jpg"

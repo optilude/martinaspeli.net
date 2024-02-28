@@ -4,3 +4,6 @@
 [submodule "themes/mediumish"]
 	path = themes/mediumish
 	url = https://github.com/lgaida/mediumish-gohugo-theme
+[submodule "themes/antole"]
+	path = themes/antole
+	url = https://github.com/lxndrblz/anatole.git
