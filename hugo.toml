@@ -1,3 +1,25 @@
 baseURL = 'https://martinaspeli.net/'
 languageCode = 'en-gb'
 title = 'Martin Aspeli'
+
+theme = "antole"
+
+[params]
+title = "Martin Aspeli"
+author = "Martin"
+description = ""
+profilePicture = "images/profile.jpg"
+
+[menu]
+
+  [[menu.main]]
+  name = "Home"
+  identifier = "home"
+  weight = 100
+  url = "/"
+
+  [[menu.main]]
+  name = "Posts"
+  weight = 200
+  identifier = "posts"
+  url = "/post/"
