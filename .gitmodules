@@ -1,0 +1,3 @@
+[submodule "hugo-theme-seven-demo"]
+	path = hugo-theme-seven-demo
+	url = https://github.com/mrhelloboy/hugo-theme-seven-demo.git
