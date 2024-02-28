@@ -9,6 +9,7 @@ title = "Martin Aspeli"
 author = "Martin Aspeli"
 description = ""
 profilePicture = "images/profile.jpg"
+readMore = true
 
 [menu]
 
