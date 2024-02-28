@@ -1,3 +1,4 @@
 baseURL = 'https://martinaspeli.net/'
 languageCode = 'en-gb'
 title = 'Martin Aspeli'
+theme = 'ananke'
