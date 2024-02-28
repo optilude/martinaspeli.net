@@ -6,7 +6,7 @@ theme = "antole"
 
 [params]
 title = "Martin Aspeli"
-author = "Martin"
+author = "Martin Aspeli"
 description = ""
 profilePicture = "images/profile.jpg"
 
@@ -22,4 +22,4 @@ profilePicture = "images/profile.jpg"
   name = "Posts"
   weight = 200
   identifier = "posts"
-  url = "/post/"
+  url = "/posts/"
