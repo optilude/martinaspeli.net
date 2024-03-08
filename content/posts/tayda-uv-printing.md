@@ -120,3 +120,10 @@ At this point, you may want to check the exported PDF. You can re-import it into
 
 You could check this again in Adobe Acrobat Reader, which should also show the same layers. Note that if, like me, you try to get someone to check it in Adobe Illustrator, the layers will be gone. I believe this is [because of a limitation of Illustrator's PDF import](https://forum.affinity.serif.com/index.php?/topic/196791-designer-export-pdf-with-layers/), rather than Affinity Designer, and that it won't matter.
 
+Once you're happy, you can upload this template under the _UV Print Templates_ part of the [Tayda Box Tool[(https://drill.taydakits.com). You'll be asked a series of questions that are designed to make sure you've followed the instructions correctly. The template will then be on your account and ready to be used.
+
+# Uploading and creating jobs
+
+The final step is to check out and pay for your Tayda order, if you haven't already, and then look for it in the Tayda drill tool (which will take 15+ minutes to show up). You will be led through a series of screens where you will associate each physical enclosure and item of the "custom drill", "UV print" and "gloss print" services in your order, with specific drill and UV templates. Tayda has some strong warnings that you need check and double-check everything, because once you submit, there can be no future amendments or changes.
+
+Then you wait. :)
