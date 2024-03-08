@@ -62,9 +62,41 @@ Before we get into some specifics, let's talk about some of the gotchas and quir
 8. You often need a white "base coat" underneath your actual design, even if the final colour isn't meant to be white. This is because a printer generally assumes it is printing on a white background. So if you are printing "light yellow", it deposits a little bit of yellow on top of the white, and if you are printing "dark yellow" it deposits a bit more. But if your powder coating is not white, this can turn out very different (blue + yellow = green, for example). The solution is to paint in white first on the "WHITE" layer, and then the intended colour in the exact same spot on the "COLOR" layer above it. A common way to do this is to first create your design in the "COLOR" layer and then copy every element to the "WHITE" layer and change the fill colour to the `RDG_WHITE` colour. Note that you cannot have other colours at all in the "WHITE" layer, so you may need to worry about any lines or fills or gradients.
 9. Something quite similar happens with the gloss finish, if you ordered this. You create a layer _on top of_ the "COLOR" layer called either "GLOSS-V" (for a shiny gloss) or "GLOSS-M" (for a matte one), copy the shapes you want to apply the gloss finish to into this layer, and change their colour to `RDG_GLOSS` from the Roland swatch. (The CMYK spot colour is `(50,25,25,0)`.)
 
-Now let's talk about Affinity Designer. It's an app that works on most platforms, including iPadOS, and can be bought for a reasonable one-off fee. I don't know if it's as good as Illustrator, but it worked well for me and was reasonably intuitive. In practice, the approach you might take to complete a design using Affinity Designer:
+Now let's talk about Affinity Designer. It's an app that works on most platforms, including iPadOS, and can be bought for a reasonable one-off fee. I don't know if it's as good as Illustrator, but it worked well for me and was reasonably intuitive. In practice, the approach you might take to complete a design using Affinity Designer looks a bit like this:
 
-1. Import the Roland "spot colour" swatches for white and gloss. There are a few floating around, but I used the ["PachyVersa" palette](https://www.pachydermpedals.com/assets/resources/PachyVersa.afpalette) from the [Pachyderm tutorial](https://www.pachydermpedals.com/tutorials/2020-12-27-angry-charles-tutorial/#rolad-swatches) and imported it as an _Application palette_ in Affinity. More on that process [here](https://forum.pedalpcb.com/threads/tayda-uv-printing-roland-swatches-for-affinity.5699/). With this installed, you can pick the relevant swatch in the Affinity colour picker to get the right colour.
-2. Start with a template that sets up the right artboart dimensions (e.g. 62x117mm for a 125B enclosure) and layers. I used the "Tayda 3 Knob" from [this page by Pachyderm pedals](https://www.pachydermpedals.com/tutorials/templates/), downloading the PDF and importing it into Affinity Designer. Make sure it's set up with the CMYK colour space.
-3. The Pachyderm template sets up a "background" layer at the very bottom that's just a square in the colour of the enclosure. This won't be included in the final export, but it's very useful to get a sense of how the design actually looks. You can use the Pantone swatch in Affinity designer to pick the correct Pantone colour for your enclosure if you ordered it painted from Tayda.
-4. ...
+Import the Roland "spot colour" swatches for white and gloss. There are a few floating around, but I used the ["PachyVersa" palette](https://www.pachydermpedals.com/assets/resources/PachyVersa.afpalette) from the [Pachyderm tutorial](https://www.pachydermpedals.com/tutorials/2020-12-27-angry-charles-tutorial/#rolad-swatches) and imported it as an _Application palette_ in Affinity. More on that process [here](https://forum.pedalpcb.com/threads/tayda-uv-printing-roland-swatches-for-affinity.5699/). With this installed, you can pick the relevant swatch in the Affinity colour picker to get the right colour.
+
+Start with a template that sets up the right artboart dimensions (e.g. 62x117mm for a 125B enclosure) and layers. I used the "Tayda 3 Knob" one from [this page by Pachyderm pedals](https://www.pachydermpedals.com/tutorials/templates/), downloading the Affinity Designer file. Make sure it's set up with the CMYK colour space.
+
+The Pachyderm template sets up a "background" layer at the very bottom that's just a square in the colour of the enclosure. This won't be included in the final export, but it's very useful to get a sense of how the design actually looks. You can use the Pantone swatch in Affinity designer to pick the correct Pantone colour for your enclosure if you ordered it painted from Tayda. On top of this, there are other layers that cover the position of drill holes, outlines to show the sizes of knobs and switches, and more stylised images that show how knobs and switches might actually look. Again, these layers are not used by Tayda and must be removed from the final PDF export, but they are important aids to make sure the layout will work in practice. And in-between we have the "WHITE", "COLOR", and "GLOSS" layers (which should be renamed "GLOSS-V" or "GLOSS-M" depending on whether you will select the varnish or matte finishes) where the design itself will go.
+
+The next step is to make sure the markers for drill holes, knobs, and switches are in the exact same place as they are on your drill template. In Affinty Designer, the _Transform_ panel lets you enter a specific position and size for a selected object, in mm. When you do this, you first want to lock aspect ratio under _Dimensions_ so height and width are changed in proportion, and choose the _centre_ _Anchor_ point, so that when you update the position X,Y coordinate, you are moving the centre of the shape.
+
+Getting the size right is pretty straightforward. For example, if you are planning to use 22mm knobs, you set the dimensions on the knob graphic to 22mm. If you want to draw the exact holes that will be drilled (which may or may not be needed, given knobs and switch nuts will be larger than the hole anyway), you can use the diameter specified on the drill template. However, getting the X,Y position correct requires a little bit of maths. This is because the Tayda drill template coordinate system treats `(0, 0)` as the _centre_, but Affinity will treat `(0, 0)` as _top left_ on the enclosure. The translation can be done like so, assuming a 125B 62x117mm enclosure:
+
+```
+Tayda X = -18.5mm
+Tayda Y = 38.1mm
+
+Enclosure width = 62mm
+Enclosure height = 117mm
+
+Affinity X = (Enclosure width / 2) + Tayda X => 12.5mm
+Affinity Y = (Enclosure height / 2) - Tayda Y => 20.4mm
+```
+
+Here, the Tayda point of `(-18.5, 38.1)` will be towards the top left of the panel. The equivalent Affinity coordinate would be `(12.5, 20.4)`.
+
+Next, create the required design on the "COLOR" layer. Simple is usually better.
+
+Everything has to be a vector. If you want to import a file that's shared as JPEG, GIF, PNG or similar bitmap image, you will need to vectorise them first. I had the best result using [this online service](https://vectorizer.com), importing an SVG file, and then copying the relevant curves from the SVG "out" so they lived directly on the "COLOR" layer, before making further edits. You can right-click (two-finger tap) on a shape in Affinity and choose _Convert to Curves_ to turn sub-layers into top-level shapes, which I have read makes it more likely Tayda will be able to print the design. You need to do the same for all text boxes prior to export, so that the text is represented as vector lines rather than embedded text. Without this, you may not get the right font on the printed design.
+
+Nothing should overlap. If you have a shape on top of another shape, you need to create a "cutout" in the underlying shape. The [Tayda UV printing instructions](https://www.taydaelectronics.com/hardware/enclosures/enclosure-uv-printing-service.html) talk about this (look for cats and houses), but the way I most effectively managed to do this in Affinity was a little dance of: Select the top shape. Copy to clipboard. Select both top and bottom shapes. Use the Affinity "object joining" toolbar (at the top when using the standard selector tool) to _subtract_ the shapes. This should leave a gap in the bottom shape. Immediately paste the copied object back so it slots into place. A bit fiddly, but works fine.
+
+If you want white coloured text or lines, you need to do this on the white layer only using the special `RDG_WHITE` spot colour, and leave a gap on the "COLOR" layer.
+
+<white>
+
+<gloss>
+
+<export>
