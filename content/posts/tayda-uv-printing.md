@@ -48,14 +48,14 @@ Another thing to think about is how much space there is inside the enclosure. A 
 
 ## Getting the design PDF right
 
-Let's talk about some of the gotchas and quirks of making a design for UV printing.
+Before we get into some specifics, let's talk about some of the gotchas and quirks of making a design for UV printing.
 
 1. The PDF must use CMYK colour space, not RGB.
-2. The PDF must be the exact dimensions of the enclosure, in mm. The Tayda UV printing guide has the expected sizes and template files you can use.
+2. The PDF must be the exact dimensions of the enclosure, in mm. The Tayda UV printing guide has the expected sizes and template files you can use. For 125B, for example, that is 62mm wide and 117mm tall.
 3. Nothing can be placed outside the edges of the file, i.e. you need to delete or crop anything that goes off the side of your file.
 4. _Everything_ in the design must be vector graphics, so:
-  - You can add text with whatever font you want, but before exporting the file, you need to convert them to paths (or "curves", as Affinity will call them) which really just means each letter becomes a vector shape.
-  - If you want to use clipart or bitmap images, you need to vectorise them first. This can be a little hit and miss, but [Vectorizer.com](https://vectorizer.com) seems to do a decent job of it for free.
+  - You can add text with whatever font you want, but before exporting the file, you need to convert them to paths (or "curves", as Affinity will call them) which really just means each letter becomes a separate vector shape.
+  - If you want to use clipart or bitmap images (like PNG, JPEG, or GIF files), you need to vectorise them first. This can be a little hit and miss, but [Vectorizer.com](https://vectorizer.com) seems to do a decent job of it for free. Simpler, cleaner designs will generally work better.
 5. Your main design needs to live entirely in a single layer named "COLOR". You can use other layers during the design process, and this can be useful for previewing the design (e.g. to show the true background colour, the positions of knobs and switches, etc.), but you have to hide them before exporting so they are not in the main PDF.
 6. Nothing can overlap in each of your exported layers. You need to flatten and modify vector shapes so that they don't. (This is to preserve colour representation, apparently.)
 7. Most printers can't print white. The UV printer _can_ do so, but only in a special layer, which must sit beneath the "COLOR" layer and must be called "WHITE" . To tell the printer to do so, you don't actually submit something that will look white on your screen. Instead, you use a special "spot colour" called `RDG_WHITE` from a special "Roland" swatch, which looks gray but comes out white. (In CMYK, this colour is `(25, 25, 25, 25)`). If you want something to look white, you need to draw it in the "WHITE" layer and then ensure nothing in the "COLOR" layer obscures it.
