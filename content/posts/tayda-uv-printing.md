@@ -22,7 +22,7 @@ The basic idea is as follows:
 
 - Create an account on the [Tayda Drill service](https://drill.taydakits.com/dashboard). This is a separate webapp by the same company. You _must_ use the same email address for the drill service account and the Tayda web store account, or you won't be able to link your order to the drill template.
 
-- In the drill tool, there is a web interface for creating a drill template. You can find [existing ones that others have shared](https://forum.pedalpcb.com/forums/drilltemplates/) as a starting point, or define your own from scratch. Essentially, you place holes on a coordinate system (where `(0,0)` is the _centre_ of the enclosure) and define how big each one should be, making an allowance for the powder coating. A little while after you've placed your order on the main Tayda web shop, you'll be able to link the enclosure you've bought to a specific drill template.
+- In the drill tool, there is a web interface for creating a drill template. You can find [existing ones that others have shared](https://forum.pedalpcb.com/forums/drilltemplates/) as a starting point, or define your own from scratch. [Here is an example based on some of the Jeds 125B layouts](https://drill.taydakits.com/box-designs/new?public_key=V0E1YWRFM0Uxa2xOaGNwQWI5dElDUT09Cg==), but beware that there is no absolute standard spacing! Essentially, you place holes on a coordinate system (where `(0,0)` is the _centre_ of the enclosure) and define how big each one should be, making an allowance for the powder coating. A little while after you've placed your order on the main Tayda web shop, you'll be able to link the enclosure you've bought to a specific drill template.
 
 - Create an appropriately formatted PDF that will be used for UV printing the design. The strong recommendation from Tayda is that you do this in Adobe Illustrator. The problem with that, is that Illustrator is expensive if you don't already have it. [Affinity Designer](https://affinity.serif.com/en-gb/designer/) is a popular alternative that is more reasonable, though it is possible more difficult to get a correct PDF out of it. I used the iPad version for my design. There are a lot of rules and nuances to getting the PDF right, and if it's not, Tayda may at best send it back to you, and at worst print something that will look wrong. More on this below.
 
@@ -38,11 +38,19 @@ The Tayda drill template tool lets you pick an enclosure type (which must obviou
 - If you are getting the enclosure powder coated (or if you are going to paint it yourself later) you need to add 0.2mm to the size of each hole, because the powder coat will get inside it. They drill first and coat later!
 - The X Y position is based on a coordinate system where `(0,0)` is dead centre of the enclosure. So a position of `(10,15)` is 10mm to the right of the vertical mid line, and 15mm above the horizontal mid line. `(-10,-15)` would be 10mm to the left and 15mm below the centre.
 
-You can also use the "line" option in the drill template tool to make non-circular cutouts, though I've not had a need for these.
+You can also use the "line" option in the drill template tool to make non-circular cutouts (think square power sockets or sliding EQ knobs), though I've not had a need for these.
 
 Entering the template is relatively straightforward, but deciding the exact position of each hole might not be. This is where finding some examples might help, and the [PedalPCB forum](https://forum.pedalpcb.com/forums/drilltemplates/) contains a bunch. You need to be logged into the drill tool first, and then you can click one of the links to get a template someone else has shared pre-loaded into the editor. Save it as your own and it'll make a useful starting point.
 
 Most of the Jeds pedals come with PCB-mounted pots and switches. What that means is that the pots and switches are soldered directly onto the PCB, not connected with short wires. This makes installing them into the enclosre easier, but it means you have to be very precise with where the holes for your pots (knobs) will go. If you wire in the components, they are more fiddly to install, but you have more freedom over exactly where they are positioned. Short, solid-core wires that have some rigidity to them are good for this type of job.
+
+Unfortunately, there is no absolute standard for Jeds Peds layouts, though here are some examples to illustrate the types of layouts you may comea cross:
+
+- [125B with six holes for knobs and switches and top-mounted jacks](https://drill.taydakits.com/box-designs/new?public_key=V0E1YWRFM0Uxa2xOaGNwQWI5dElDUT09Cg==)
+- [125B with narrower spacing and side-mounted jacks](https://drill.taydakits.com/box-designs/new?public_key=SnpVd0RONGlyQS9uTUl1YU5sYzc3Zz09Cg==)
+- [1590B with side-mounted jacks](https://drill.taydakits.com/box-designs/new?public_key=QVMxM1JKdHlyNEZPSjNkL1ZySytpZz09Cg==)
+
+*Again, please remember to measure your actual kit as it may not match any of these layouts!*
 
 Another thing to think about is how much space there is inside the enclosure. A large PCB, with many pots and switches, will have less room for error, because you might end up with a pot getting in the way of a jack socket or a switch not fitting between two knobs. Careful measurement is the key, since the Tayda drill service has a long lead time. Unless you're confident, I'd recommend buying the PCB and controls first, building the guts of the pedal, and then checking your measurements. Or even ordering the Jeds pre-drilled enclosure and take measurements from it, even if you aren't using it.
 
@@ -127,3 +135,5 @@ Once you're happy, you can upload this template under the _UV Print Templates_ p
 The final step is to check out and pay for your Tayda order, if you haven't already, and then look for it in the Tayda drill tool (which will take 15+ minutes to show up). You will be led through a series of screens where you will associate each physical enclosure and item of the "custom drill", "UV print" and "gloss print" services in your order, with specific drill and UV templates. Tayda has some strong warnings that you need check and double-check everything, because once you submit, there can be no future amendments or changes.
 
 Then you wait. :)
+
+Your job will appear in the drill tool and over time the various parts (drill, paint, and print) will show updated statuses. It's a good idea to check back periodically: I believe Tayda may report errors on the drill tool dashboard but won't email you if something is wrong.
