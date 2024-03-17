@@ -76,13 +76,13 @@ Now let's talk about Affinity Designer. It's an app that works on most platforms
 
 Import the Roland "spot colour" swatches for white and gloss. There are a few floating around, but I used the ["PachyVersa" palette](https://www.pachydermpedals.com/assets/resources/PachyVersa.afpalette) from the [Pachyderm tutorial](https://www.pachydermpedals.com/tutorials/2020-12-27-angry-charles-tutorial/#rolad-swatches) and imported it as an _Application palette_ in Affinity. More on that process [here](https://forum.pedalpcb.com/threads/tayda-uv-printing-roland-swatches-for-affinity.5699/). With this installed, you can pick the relevant swatch in the Affinity colour picker to get the right colour.
 
-Start with a template that sets up the right artboart dimensions (e.g. 62x117mm for a 125B enclosure) and layers. I began the "Tayda 3 Knob" one from [this page by Pachyderm pedals](https://www.pachydermpedals.com/tutorials/templates/), downloading the Affinity Designer file. Make sure it's set up with the CMYK colour space. You could start from scratch with a blank file too, of course, but the templates here are useful because they illustrate a lot of good practices in terms of layer and colour management.
+Start with a template that sets up the right artboart dimensions (e.g. 62x117mm for a 125B enclosure) and layers. I began the "Tayda 3 Knob" one from [this page by Pachyderm pedals](https://www.pachydermpedals.com/tutorials/templates/), downloading the Affinity Designer file, though below I'll share an example that aligns to one of the 125B drill templates above. You could start from scratch with a blank file too, of course, but the templates here are useful because they illustrate a lot of good practices in terms of layer and colour management.
 
 The Pachyderm template sets up a "background" layer at the very bottom that's just a square in the colour of the enclosure. This won't be included in the final export, but it's very useful to get a sense of how the design actually looks. You can use the Pantone swatch in Affinity designer to pick the correct Pantone colour for your enclosure if you ordered it painted from Tayda.
 
 On top of this, there are other layers that cover the position of drill holes, outlines to show the sizes of knobs and switches, and more stylised images that show how knobs and switches might actually look. Again, these layers are not used by Tayda and must be removed from the final PDF export, but they are important aids to make sure the layout will work in practice.
 
-And in-between we have the "WHITE", "COLOR", and "GLOSS" layers (which should be renamed "GLOSS-V" or "GLOSS-M" depending on whether you will select the varnish or matte finishes) where the design itself will go.
+And in-between we have the "WHITE", "COLOR", and "GLOSS-M" (for matte) or "GLOSS-V" (for shiny varnish) layers where the design itself will go.
 
 The next step is to make sure the markers for drill holes, knobs, and switches are in the exact same place as they are on your drill template. In Affinty Designer, the _Transform_ panel lets you enter a specific position and size for a selected object, in mm. When you do this, you first want to lock aspect ratio under _Dimensions_ so height and width are changed in proportion, and choose the _centre_ _Anchor_ point, so that when you update the position X,Y coordinate, you are moving the centre of the shape, not the top-left corner. (The Tayda drill template tool does the same thing, i.e. the coordinate you enter is the centre of the hole, though it is not the same coordinate system - see below.)
 
@@ -92,13 +92,13 @@ However, getting the X,Y position correct requires a little bit of maths. This i
 
 ```
 Tayda X = -18.5mm
-Tayda Y = 38.1mm
+Tayda Y = 40mm
 
 Enclosure width = 62mm
 Enclosure height = 117mm
 
 Affinity X = (Enclosure width / 2) + Tayda X => 12.5mm
-Affinity Y = (Enclosure height / 2) - Tayda Y => 20.4mm
+Affinity Y = (Enclosure height / 2) - Tayda Y => 18.5mm
 ```
 
 (I actually use an iPad app called "Calca" to do this very thing dynamically from the text above. You could use a spreadsheet too, of course.)
@@ -130,6 +130,20 @@ You could check this again in Adobe Acrobat Reader, which should also show the s
 
 Once you're happy, you can upload this template under the _UV Print Templates_ part of the [Tayda Box Tool[(https://drill.taydakits.com). You'll be asked a series of questions that are designed to make sure you've followed the instructions correctly. The template will then be on your account and ready to be used.
 
+Here are example Affinity Designer and the PDF export files that uses the first 125B layout above, showing three knobs and three switches. All the techniques above are demonstrated here:
+
+- I started by setting the background colour on the background layer, before locking that layer.
+- Next, I adjusted the size of each of the drill holes, knob guides, and hardware visuals in the relevant layers, using the "centre" anchoring and translating the positions and sizes directly from the Tayda drill tool using the calculation above. (If you have another design with a similar layout but perhaps fewer knobs, you could use this as a starting point and delete the bits you don't need. Just remember to measure, as even another six-hole design could have a different spacing.)
+- I added text labels using the font tool and careful positioning. Once I was happy with the text, I converted it to curves (paths), so it is no longer editable, but should print correctly.
+- I found a PNG file of the Jeds Peds logo and converted it to SVG using [Vectorizer.com](https://vectorizer.com). After importing ("placing") this in Affinity Designer, I double-clicked into the image and copied all the shapes, before exiting the SVG editor, deleting the image,  immediately pasting the shapes back, and then grouping them. This way, the shapes are actually found directly on the Affinity file, not nested inside the SVG.
+- The vectorised image had several areas with white or gray shapes on top of black shapes. Double-clicking into the group now comprising the logo, I used the "copy, subtract, paste" dance described above to make sure nothing overlapped (i.e. if I had deleted any individual shape, I'd see the background coming through). Note that at this point, I still had white shapes on the "COLOR" layer.
+- To make the white layer, I hid the hardware and guide (holes, and knobs) layers, copied everything from the "COLOR" layer except the black text in the bottom corner, hid the "COLOR layer", moved to the "WHITE" layer, and pasted the shapes there. Then I selected all the elements and changed their fill colour to the "RDG_WHITE" colour from the Roland swatch. At this point, everything other than the background looked uniformly gray, with no lines or other colours.
+- I repeated this in the "GLOSS-M" layer, but this time I included the black text (which does not need a white undercoat but does need matte gloss on top). I selected all the shapes inside the group with the logo and used the "Add" function under "Geometry" to make a single, contiguous shape before setting the colour of this and the textual elements (earlier converted to curves!) to "RDG_GLOSS", which shows up a blueish colour.
+- I still had white content in the "COLOR" layer, specifically inside the Jeds Peds logo. With both the "COLOR" and "WHITE" layers visible, I edited the group on the "COLOR" layer to delete the white shapes, confirming that the grayish "RDG_WHITE" would show through.
+- At this point, I turned all the layers back on to confirm that everything aligned properly. With the "GLOSS-M" layer selected, everything was coloured uniformly "RDG_GLOSS". Turning that layer off, the colours would come through though the whites still looked like the grayish "RDG_WHITE". With the "COLOR" layer hidden, everything looked like "RDG_WHITE".
+- I then hid all layers except "WHITE", "COLOR" and "GLOSS-M" and exported to PDF, making sure to use CMYK, including layers, and honouring spot colours.
+
+- 
 # Uploading and creating jobs
 
 The final step is to check out and pay for your Tayda order, if you haven't already, and then look for it in the Tayda drill tool (which will take 15+ minutes to show up). You will be led through a series of screens where you will associate each physical enclosure and item of the "custom drill", "UV print" and "gloss print" services in your order, with specific drill and UV templates. Tayda has some strong warnings that you need check and double-check everything, because once you submit, there can be no future amendments or changes.
