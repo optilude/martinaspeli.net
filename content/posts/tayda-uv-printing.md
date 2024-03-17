@@ -143,7 +143,6 @@ Here are example Affinity Designer and the PDF export files that uses the first 
 - At this point, I turned all the layers back on to confirm that everything aligned properly. With the "GLOSS-M" layer selected, everything was coloured uniformly "RDG_GLOSS". Turning that layer off, the colours would come through though the whites still looked like the grayish "RDG_WHITE". With the "COLOR" layer hidden, everything looked like "RDG_WHITE".
 - I then hid all layers except "WHITE", "COLOR" and "GLOSS-M" and exported to PDF, making sure to use CMYK, including layers, and honouring spot colours.
 
-- 
 # Uploading and creating jobs
 
 The final step is to check out and pay for your Tayda order, if you haven't already, and then look for it in the Tayda drill tool (which will take 15+ minutes to show up). You will be led through a series of screens where you will associate each physical enclosure and item of the "custom drill", "UV print" and "gloss print" services in your order, with specific drill and UV templates. Tayda has some strong warnings that you need check and double-check everything, because once you submit, there can be no future amendments or changes.
