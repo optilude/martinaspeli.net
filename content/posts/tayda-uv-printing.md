@@ -22,7 +22,7 @@ The basic idea is as follows:
 
 - Create an account on the [Tayda Drill service](https://drill.taydakits.com/dashboard). This is a separate webapp by the same company. You _must_ use the same email address for the drill service account and the Tayda web store account, or you won't be able to link your order to the drill template.
 
-- In the drill tool, there is a web interface for creating a drill template. You can find [existing ones that others have shared](https://forum.pedalpcb.com/forums/drilltemplates/) as a starting point, or define your own from scratch. [Here is an example based on some of the Jeds 125B layouts](https://drill.taydakits.com/box-designs/new?public_key=V0E1YWRFM0Uxa2xOaGNwQWI5dElDUT09Cg==), but beware that there is no absolute standard spacing! Essentially, you place holes on a coordinate system (where `(0,0)` is the _centre_ of the enclosure) and define how big each one should be, making an allowance for the powder coating. A little while after you've placed your order on the main Tayda web shop, you'll be able to link the enclosure you've bought to a specific drill template.
+- In the drill tool, there is a web interface for creating a drill template. You can find [existing ones that others have shared](https://forum.pedalpcb.com/forums/drilltemplates/) as a starting point, or define your own from scratch. Essentially, you place holes on a coordinate system (where `(0,0)` is the _centre_ of the enclosure) and define how big each one should be, making an allowance for the powder coating. A little while after you've placed your order on the main Tayda web shop, you'll be able to link the enclosure you've bought to a specific drill template.
 
 - Create an appropriately formatted PDF that will be used for UV printing the design. The strong recommendation from Tayda is that you do this in Adobe Illustrator. The problem with that, is that Illustrator is expensive if you don't already have it. [Affinity Designer](https://affinity.serif.com/en-gb/designer/) is a popular alternative that is more reasonable, though it is possible more difficult to get a correct PDF out of it. I used the iPad version for my design. There are a lot of rules and nuances to getting the PDF right, and if it's not, Tayda may at best send it back to you, and at worst print something that will look wrong. More on this below.
 
@@ -46,9 +46,9 @@ Most of the Jeds pedals come with PCB-mounted pots and switches. What that means
 
 Unfortunately, there is no absolute standard for Jeds Peds layouts, though here are some examples to illustrate the types of layouts you may comea cross:
 
-- [125B with six holes for knobs and switches and top-mounted jacks](https://drill.taydakits.com/box-designs/new?public_key=V0E1YWRFM0Uxa2xOaGNwQWI5dElDUT09Cg==)
-- [125B with narrower spacing and side-mounted jacks](https://drill.taydakits.com/box-designs/new?public_key=SnpVd0RONGlyQS9uTUl1YU5sYzc3Zz09Cg==)
-- [1590B with side-mounted jacks](https://drill.taydakits.com/box-designs/new?public_key=QVMxM1JKdHlyNEZPSjNkL1ZySytpZz09Cg==)
+1. [125B with six holes for knobs and switches and top-mounted jacks](https://drill.taydakits.com/box-designs/new?public_key=V0E1YWRFM0Uxa2xOaGNwQWI5dElDUT09Cg==)
+2. [125B with narrower spacing and side-mounted jacks](https://drill.taydakits.com/box-designs/new?public_key=SnpVd0RONGlyQS9uTUl1YU5sYzc3Zz09Cg==)
+3. [1590B with side-mounted jacks](https://drill.taydakits.com/box-designs/new?public_key=QVMxM1JKdHlyNEZPSjNkL1ZySytpZz09Cg==)
 
 *Again, please remember to measure your actual kit as it may not match any of these layouts!*
 
@@ -76,7 +76,7 @@ Now let's talk about Affinity Designer. It's an app that works on most platforms
 
 Import the Roland "spot colour" swatches for white and gloss. There are a few floating around, but I used the ["PachyVersa" palette](https://www.pachydermpedals.com/assets/resources/PachyVersa.afpalette) from the [Pachyderm tutorial](https://www.pachydermpedals.com/tutorials/2020-12-27-angry-charles-tutorial/#rolad-swatches) and imported it as an _Application palette_ in Affinity. More on that process [here](https://forum.pedalpcb.com/threads/tayda-uv-printing-roland-swatches-for-affinity.5699/). With this installed, you can pick the relevant swatch in the Affinity colour picker to get the right colour.
 
-Start with a template that sets up the right artboart dimensions (e.g. 62x117mm for a 125B enclosure) and layers. I used the "Tayda 3 Knob" one from [this page by Pachyderm pedals](https://www.pachydermpedals.com/tutorials/templates/), downloading the Affinity Designer file. Make sure it's set up with the CMYK colour space. You could start from scratch with a blank file too, of course, but the templates here are useful because they illustrate a lot of good practices in terms of layer and colour management.
+Start with a template that sets up the right artboart dimensions (e.g. 62x117mm for a 125B enclosure) and layers. I began the "Tayda 3 Knob" one from [this page by Pachyderm pedals](https://www.pachydermpedals.com/tutorials/templates/), downloading the Affinity Designer file. Make sure it's set up with the CMYK colour space. You could start from scratch with a blank file too, of course, but the templates here are useful because they illustrate a lot of good practices in terms of layer and colour management.
 
 The Pachyderm template sets up a "background" layer at the very bottom that's just a square in the colour of the enclosure. This won't be included in the final export, but it's very useful to get a sense of how the design actually looks. You can use the Pantone swatch in Affinity designer to pick the correct Pantone colour for your enclosure if you ordered it painted from Tayda.
 
