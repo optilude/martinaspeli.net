@@ -2,7 +2,7 @@ baseURL = 'https://martinaspeli.net/'
 languageCode = 'en-gb'
 title = 'Martin Aspeli'
 
-theme = "antole"
+theme = "anatole"
 
 [params]
 title = "Martin Aspeli"
