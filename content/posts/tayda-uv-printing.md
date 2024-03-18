@@ -92,14 +92,13 @@ And in-between we have the "WHITE", "COLOR", and "GLOSS-M" (for matte) or "GLOSS
 
 The next step is to make sure the markers for drill holes, knobs, and switches are in the exact same place as they are on your drill template. In Affinty Designer, the _Transform_ panel lets you enter a specific position and size for a selected object, in mm. When you do this, you first want to lock aspect ratio under _Dimensions_ so height and width are changed in proportion, and choose the _centre_ _Anchor_ point, so that when you update the position X,Y coordinate, you are moving the centre of the shape, not the top-left corner. (The Tayda drill template tool does the same thing, i.e. the coordinate you enter is the centre of the hole, though it is not the same coordinate system - see below.)
 
-[!Affinity Designer drill guides and positioning](/images/tayda-uv-hole-guides.jpg)
+![Affinity Designer drill guides and positioning](/images/tayda-uv-hole-guides.jpg)
 
 Getting the size right is pretty straightforward. For example, if you are planning to use 22mm knobs, you set the dimensions on the knob graphic in the relevant layer to 22mm. (This is optional of course - you don't be exporting those graphics, but they help finalise the design.) If you want to draw the exact holes that will be drilled (which may or may not be needed, given knobs and switch nuts will be larger than the hole anyway), you can use the diameter specified on the drill template.
 
 However, getting the X,Y position correct requires a little bit of maths. This is because the Tayda drill template coordinate system treats `(0, 0)` as the _centre_, but Affinity will treat `(0, 0)` as _top left_ on the enclosure. (I believe Illustrator has an option to change the canvas grid system, but I could not find such an option in Affinity Designer on the iPad.) The translation can be done like so, assuming a 125B 62x117mm enclosure:
 
-```
-Tayda X = -18.5mm
+```Tayda X = -18.5mm
 Tayda Y = 40mm
 
 Enclosure width = 62mm
