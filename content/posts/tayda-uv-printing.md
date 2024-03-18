@@ -1,7 +1,7 @@
 +++
 title = 'Tayda enclosure UV printing for guitar pedals'
 date = 2024-03-07T21:00:00Z
-draft = true
+draft = false
 +++
 
 I have built many guitar effects pedals from [Jeds Peds](https://www.jedspeds.co.uk), who sell a bewildering array of PCB pedal kits, and has a great builder community on Facebook. The kits arrive by default with unpainted enclosures, which you can decorate yourself, and that's part of the fun. Most people use spray painting and home-printed waterslide decals for this, but after my first batch of pedals, I decided that painting is my least favourite part of the process. It requires a level of patience and consistency that I don't possess, is sensitive to temperature and humidiy, and makes a mess. And even with base coats, multiple colour coats, and clear top coats, my pedals all chip and ding too quickly.
@@ -39,6 +39,10 @@ The Tayda drill template tool lets you pick an enclosure type (which must obviou
 - The X Y position is based on a coordinate system where `(0,0)` is dead centre of the enclosure. So a position of `(10,15)` is 10mm to the right of the vertical mid line, and 15mm above the horizontal mid line. `(-10,-15)` would be 10mm to the left and 15mm below the centre.
 
 You can also use the "line" option in the drill template tool to make non-circular cutouts (think square power sockets or sliding EQ knobs), though I've not had a need for these.
+
+Here is what the drill template tool looks like:
+
+![Tayda Drill Tool template](/images/tayda-uv-drill-template.jpg)
 
 Entering the template is relatively straightforward, but deciding the exact position of each hole might not be. This is where finding some examples might help, and the [PedalPCB forum](https://forum.pedalpcb.com/forums/drilltemplates/) contains a bunch. You need to be logged into the drill tool first, and then you can click one of the links to get a template someone else has shared pre-loaded into the editor. Save it as your own and it'll make a useful starting point.
 
@@ -84,7 +88,11 @@ On top of this, there are other layers that cover the position of drill holes, o
 
 And in-between we have the "WHITE", "COLOR", and "GLOSS-M" (for matte) or "GLOSS-V" (for shiny varnish) layers where the design itself will go.
 
+![Affinity Designer layers](/images/tayda-uv-layers.jpg)
+
 The next step is to make sure the markers for drill holes, knobs, and switches are in the exact same place as they are on your drill template. In Affinty Designer, the _Transform_ panel lets you enter a specific position and size for a selected object, in mm. When you do this, you first want to lock aspect ratio under _Dimensions_ so height and width are changed in proportion, and choose the _centre_ _Anchor_ point, so that when you update the position X,Y coordinate, you are moving the centre of the shape, not the top-left corner. (The Tayda drill template tool does the same thing, i.e. the coordinate you enter is the centre of the hole, though it is not the same coordinate system - see below.)
+
+[!Affinity Designer drill guides and positioning](/images/tayda-uv-hole-guides.jpg)
 
 Getting the size right is pretty straightforward. For example, if you are planning to use 22mm knobs, you set the dimensions on the knob graphic in the relevant layer to 22mm. (This is optional of course - you don't be exporting those graphics, but they help finalise the design.) If you want to draw the exact holes that will be drilled (which may or may not be needed, given knobs and switch nuts will be larger than the hole anyway), you can use the diameter specified on the drill template.
 
@@ -109,11 +117,15 @@ Next, create the required design on the "COLOR" layer. Simple is usually better.
 
 Everything has to be a vector. If you want to import a file that's shared as JPEG, GIF, PNG or similar bitmap image, you will need to vectorise them first. I had the best result using [this online service](https://vectorizer.com), importing an SVG file, and then copying the relevant curves from the SVG "out" so they lived directly on the "COLOR" layer, before making further edits. You can right-click (two-finger tap) on a shape in Affinity and choose _Convert to Curves_ to turn sub-layers into top-level shapes, which I have read makes it more likely Tayda will be able to print the design. You need to do the same for all text boxes prior to export, so that the text is represented as vector lines rather than embedded text. Without this, you may not get the right font on the printed design.
 
+![Affinity Designer converting to curves](/images/tayda-uv-convert-to-curves.jpg)
+
 Nothing should overlap. If you have a shape on top of another shape, you need to create a "cutout" in the underlying shape. The [Tayda UV printing instructions](https://www.taydaelectronics.com/hardware/enclosures/enclosure-uv-printing-service.html) talk about this (look for cats and houses), but the way I most effectively managed to do this in Affinity was a little dance of: Select the top shape. Copy to clipboard. Select both top and bottom shapes. Use the Affinity _Geometry_ toolbar (at the top when using the standard selector tool) to _subtract_ the shapes, which should leave a gap in the bottom shape. Immediately paste the copied object back so it slots into place. Rinse. Repeat. A bit fiddly, but works fine.
 
 If you want white coloured text or lines, you need to do this on the white layer only, using the special `RDG_WHITE` spot colour, and leave a gap on the "COLOR" layer. You may want to leave it on the "COLOR" layer in (actual) white first and then delete this towards the end, since the `RDG_WHITE` colour doesn't actually look white on your screen.
 
 Speaking of the white layer, once you've got the design you want on the "COLOR" layer, it's time to create the white undercoat. The simplest option is just to copy everything from "COLOR" to "WHITE", temporarily hide the former, and then change the fill colour to the `RDG_WHITE` colour from the Roland swatch. It'll look gray on your screen, but it'll print white. It's important that _everything_ in this layer is this colour, including lines and fills and the contents of groups. If you have a complex but continuous shape made up of several objects and paths, you may want to select all the elements and use the _Geometry_ toolbar to _Add_ all the shapes together into a single path, which will be easier to colour. Turn the "COLOR" layer back on, and the "WHITE" layer contents should be fully hidden underneath it, save for any "gaps" you've left for true white content.
+
+![Affinity Designer Roland swatches for white and gloss](/images/tayda-uv-swatches.jpg)
 
 The "GLOSS-V" (shiny varnish) or "GLOSS-M" (matte) layer can be made in a similar way. Copy everything you want to make glossy, paste it into the gloss layer, and change the color to `RDG_GLOSS`, which will look a blueish gray and will cover the "COLOR" layer contents fully, unless you want to leave some bits unglossy. (Conincidentally, I've wondered if it would be a good idea to just cover the whole design with a gloss square to coat all of it, but I believe this would leave slight height differences across the design and it just doesn't seem to be the way others have done it, so I never tried.)
 
@@ -130,7 +142,9 @@ You could check this again in Adobe Acrobat Reader, which should also show the s
 
 Once you're happy, you can upload this template under the _UV Print Templates_ part of the [Tayda Box Tool[(https://drill.taydakits.com). You'll be asked a series of questions that are designed to make sure you've followed the instructions correctly. The template will then be on your account and ready to be used.
 
-Here are example [Affinity Designer](/files/JP125%20Template.afdesign) and [PDF export](/files/JP125%20Template%20-%20Export%20example.pdf) files that uses the first 125B layout above, showing three knobs and three switches. All the techniques above are demonstrated here:
+Here are example [Affinity Designer](/files/JP125%20Template.afdesign) and [PDF export](/files/JP125%20Template%20-%20Export%20example.pdf) files that uses the first 125B layout above, showing three knobs and three switches. All the techniques above are demonstrated here.
+
+![Affinity Designer 125B example](/images/tayda-uv-125b-example.png)
 
 - I started by setting the background colour on the background layer, before locking that layer.
 - Next, I adjusted the size of each of the drill holes, knob guides, and hardware visuals in the relevant layers, using the "centre" anchoring and translating the positions and sizes directly from the Tayda drill tool using the calculation above. (If you have another design with a similar layout but perhaps fewer knobs, you could use this as a starting point and delete the bits you don't need. Just remember to measure, as even another six-hole design could have a different spacing.)
