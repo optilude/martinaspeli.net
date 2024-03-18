@@ -143,6 +143,8 @@ Once you're happy, you can upload this template under the _UV Print Templates_ p
 
 Here are example [Affinity Designer](/files/JP125%20Template.afdesign) and [PDF export](/files/JP125%20Template%20-%20Export%20example.pdf) files that uses the first 125B layout above, showing three knobs and three switches. All the techniques above are demonstrated here.
 
+**DISCLAIMER:** I have not tested this exact file with Tayda. It is closely based on a design I _did_ get drilled, painted, and printed, but it is possible I have made a mistake somewhere. Do your own checks, and use at your own risk. I am sharing it mainly to illustrate the process! 
+
 ![Affinity Designer 125B example](/images/tayda-uv-125b-example.png)
 
 - I started by setting the background colour on the background layer, before locking that layer.
