@@ -130,7 +130,7 @@ You could check this again in Adobe Acrobat Reader, which should also show the s
 
 Once you're happy, you can upload this template under the _UV Print Templates_ part of the [Tayda Box Tool[(https://drill.taydakits.com). You'll be asked a series of questions that are designed to make sure you've followed the instructions correctly. The template will then be on your account and ready to be used.
 
-Here are example Affinity Designer and the PDF export files that uses the first 125B layout above, showing three knobs and three switches. All the techniques above are demonstrated here:
+Here are example [Affinity Designer](/files/JP125%20Template.afdesign) and [PDF export](/files/JP125%20Template%20-%20Export%20example.pdf) files that uses the first 125B layout above, showing three knobs and three switches. All the techniques above are demonstrated here:
 
 - I started by setting the background colour on the background layer, before locking that layer.
 - Next, I adjusted the size of each of the drill holes, knob guides, and hardware visuals in the relevant layers, using the "centre" anchoring and translating the positions and sizes directly from the Tayda drill tool using the calculation above. (If you have another design with a similar layout but perhaps fewer knobs, you could use this as a starting point and delete the bits you don't need. Just remember to measure, as even another six-hole design could have a different spacing.)
