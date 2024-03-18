@@ -11,6 +11,12 @@ description = ""
 profilePicture = "images/profile.jpg"
 readMore = true
 
+[module]
+
+  [[module.imports]]
+    path = "github.com/lxndrblz/anatole"
+    disable=false
+
 [menu]
 
   [[menu.main]]
