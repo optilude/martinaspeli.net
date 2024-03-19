@@ -91,7 +91,8 @@ Getting the size right is pretty straightforward. For example, if you are planni
 
 However, getting the X,Y position correct requires a little bit of maths. This is because the Tayda drill template coordinate system treats `(0, 0)` as the *centre*, but Affinity will treat `(0, 0)` as *top left* on the enclosure. (I believe Illustrator has an option to change the canvas grid system, but I could not find such an option in Affinity Designer on the iPad.) The translation can be done like so, assuming a 125B 62x117mm enclosure:
 
-```Tayda
+```markdown
+Tayda X = -18.5mm
 Tayda Y = 40mm
 
 Enclosure width = 62mm
@@ -103,7 +104,7 @@ Affinity Y = (Enclosure height / 2) - Tayda Y => 18.5mm
 
 (I actually use an iPad app called "Calca" to do this very thing dynamically from the text above. You could use a spreadsheet too, of course.)
 
-Here, the Tayda point of `(-18.5, 38.1)` will be towards the top left of the enclosure face side. The equivalent Affinity coordinate would be `(12.5, 20.4)`.
+Here, the Tayda point of `(-18.5, 40)` will be towards the top left of the enclosure face side. The equivalent Affinity coordinate would be `(12.5, 20.4)`.
 
 Next, create the required design on the "COLOR" layer. Simple is usually better. Leave the background colour and knob/switch layers visible (perhaps locked) while you do this, so you can see how your design will actually look when the pedal is assembled.
 
@@ -132,7 +133,7 @@ At this point, you may want to check the exported PDF. You can re-import it into
 
 You could check this again in Adobe Acrobat Reader, which should also show the same layers. Note that if, like me, you try to get someone to check it in Adobe Illustrator, the layers will be gone. I believe this is [because of a limitation of Illustrator's PDF import](https://forum.affinity.serif.com/index.php?/topic/196791-designer-export-pdf-with-layers/), rather than Affinity Designer, and that it won't matter.
 
-Once you're happy, you can upload this template under the *UV Print Templates* part of the \[Tayda Box Tool\[([https://drill.taydakits.com](https://drill.taydakits.com)). You'll be asked a series of questions that are designed to make sure you've followed the instructions correctly. The template will then be on your account and ready to be used.
+Once you're happy, you can upload this template under the *UV Print Templates* part of the [Tayda Drill Tool](https://drill.taydakits.com/). You'll be asked a series of questions that are designed to make sure you've followed the instructions correctly. The template will then be on your account and ready to be used.
 
 Here are example [Affinity Designer](/files/JP125%20Template.afdesign) and [PDF export](/files/JP125%20Template%20-%20Export%20example.pdf) files that uses the first 125B layout above, showing three knobs and three switches. All the techniques above are demonstrated here.
 
