@@ -26,5 +26,6 @@ collections_config:
     disable_add_folder: false
     disable_file_actions: false
     schemas:
+base_url: https://martinaspeli.net/
 data_config: {}
 timezone: Etc/UTC
