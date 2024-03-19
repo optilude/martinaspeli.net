@@ -60,7 +60,7 @@ You can trigger the build manually under GitHub’s Actions screens to create th
 
 You can now create new content and deploy your site entirely in GitHub using its web interface or the github.dev editor (which is like Codespaces just without the attached terminal and virtual machine), or offline with a git client. Each time you commit and push a change, the workflow should rebuild your site and deploy it within a minute or two.
 
-However, you can go one better using CloudCannon as a CMS. There is a free personal tier if you only need a single user, and paid tiers with more power. CloudCannon [natively supports Hugo](https://cloudcannon.com/hugo-cms/) and understands its structure.
+However, you can go one better using CloudCannon as a CMS. There is a free personal tier if you only need a single user, and paid tiers with more power. CloudCannon [natively supports Hugo](https://cloudcannon.com/hugo-cms/) and understands its structure and features.
 
 The basic approach is:
 
