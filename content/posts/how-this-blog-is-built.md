@@ -3,8 +3,6 @@ title = "How this blog is built"
 date = 2024-02-28T21:03:30.000Z
 draft = false
 +++
-# How this blog is built
-
 This blog is hosted for free using [GitHub](https://github.com) Pages, [Hugo,](https://gohugo.io) and the free tier of [CloudCannon](https://cloudcannon.com)CMS. Everything was built and configured in the browser. Here are some instructions for how to set up something similar.
 
 ## Creating a Hugo site on GitHub
