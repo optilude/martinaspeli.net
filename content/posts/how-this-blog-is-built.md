@@ -17,7 +17,7 @@ The [instructions for creating a new Hugo site](https://gohugo.io/getting-starte
 $ hugo new site --force .
 ```
 
-This will create a new site. Next install a theme. I used the [Anatole](https://themes.gohugo.io/themes/anatole/)one. **Note**: Using git “submodules” might not work reliably with Cloudcannon, so it is likely better to install a theme using Hugo modules. For Anatole this was done with:
+This will create a new site. Next install a theme. I used the [Anatole](https://themes.gohugo.io/themes/anatole/) one. **Note**: Using git “submodules” might not work reliably with CloudCannon, so it is likely better to install a theme using Hugo modules. For Anatole this was done with:
 
 ```
 $ hugo mod init github.com/<username>/<repository>
