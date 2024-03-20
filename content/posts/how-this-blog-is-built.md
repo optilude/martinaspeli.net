@@ -58,7 +58,7 @@ You can trigger the build manually under GitHub’s Actions screens to create th
 
 ## Setting up CloudCannon as a CMS
 
-You can now create new content and deploy your site entirely in GitHub using its web interface or the github.dev editor (which is like Codespaces just without the attached terminal and virtual machine), or offline with a git client. Each time you commit and push a change, the workflow should rebuild your site and deploy it within a minute or two.
+You can now create new content and deploy your site entirely in GitHub using its web interface or the github.dev editor (which is like Codespaces just without the attached terminal and virtual machine), or offline with a git client. Each time you commit and push a change, the Actions workflow should rebuild your site and deploy it within a minute or two.
 
 However, you can go one better using CloudCannon as a CMS. There is a free personal tier if you only need a single user, and paid tiers with more power. CloudCannon [natively supports Hugo](https://cloudcannon.com/hugo-cms/) and understands its structure and features.
 
@@ -68,4 +68,4 @@ The basic approach is:
 * Connect CloudCannon to GitHub under Settings -&gt; Org Settings
 * Create a new Site in CloudCannon that is linked to the repository you used earlier. CloudCannon will guide you through picking a repository and branch and link things up. Afterwards you can find this in Site Settings -&gt; Source Syncing.
 * CloudCannon will locally build a test version of your site by running its own version of Hugo, and deploy it to a test URL for you. This is not the same as GitHub Pages, which has its own build triggers. It is possible to use CloudCannon as your deployment and hosting solution, too, but my preference is to keep this inside GitHub Pages and Actions and only use CloudCannon for editing and preview.
-* You can now find and edit your first post in the CloudCannon CMS, or add new content.. When saved, it will push data to GitHub, which will trigger your build there (as well as the preview build in CloudCannon itself), updating your deployed site.
+* You can now find and edit your first post in the CloudCannon CMS, or add new content. When saved, it will push data to GitHub, which will trigger your build there (as well as the preview build in CloudCannon itself), updating your deployed site.
