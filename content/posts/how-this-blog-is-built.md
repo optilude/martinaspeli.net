@@ -9,7 +9,7 @@ This blog is hosted for free using [GitHub](https://github.com) Pages, [Hugo,](h
 
 First, create an account (if necessary) and then a new repository on [GitHub,](https://github.com) initially with an empty [README.md](http://README.md) file.
 
-Then, create a new Codespace on GitHub based on this repository. We’ll use this as a virtual machine to run Hugo locally and get the basic site set up. A Codespace is like a Visual Studio Code editor in the browser with a builtin terminal that runs on a small local machine. You need only the most basic VM for these purposes, and we’ll not need it for long.
+Then, create a new Codespace on GitHub based on this repository. We’ll use this as a virtual machine to run the Hugo command line tool and get the basic site set up. A Codespace is like a Visual Studio Code editor in the browser with a builtin terminal that runs on a small virtual machine. You need only the most basic VM for these purposes, and we’ll not need it for long.
 
 The [instructions for creating a new Hugo site](https://gohugo.io/getting-started/quick-start/) should apply, and Hugo ought to be already installed in the Codespaces environment. So open a new terminal inside the Codespaces editor (if not open already) and it should already be in the folder for your repository. Then run:
 
@@ -48,11 +48,11 @@ public/
 .hugo_build.lock
 ```
 
-Then commit and push the changes. You can now shut down the Codespaces virtual machine.
+Then commit and push the changes. You can now shut down the Codespace.
 
 ## Setting up GitHub Pages hosting
 
-[This guide](https://gohugo.io/hosting-and-deployment/hosting-on-github/)contains the basic instructions. Essentially, you will set up Pages hosting for your repository, and use a workflow in GitHub Actions to trigger a Hugo build each time there is a change to the repository.
+[This guide](https://gohugo.io/hosting-and-deployment/hosting-on-github/) contains the basic instructions. Essentially, you will set up Pages hosting for your repository, and use a workflow in GitHub Actions to trigger a Hugo build each time there is a change to the repository.
 
 You can trigger the build manually under GitHub’s Actions screens to create the site. The GitHub Pages documentation and guidance on the Settings screens provide further information.
 
