@@ -163,4 +163,6 @@ Then you wait! :)
 
 Your job will appear in the drill tool and over time the various parts (drill, paint, and print) will show updated statuses. It's a good idea to check back periodically: I believe Tayda may report errors on the drill tool dashboard but won't email you if something is wrong.
 
-After a while (it took a little over a week for me), you will hopefully receive a shipment notification that lets you know your order is on the way.
+After a while (it took a little over a week for me), you will hopefully receive a shipment notification that lets you know your order is on the way. And if all went well, it might look a little like this:
+
+![Finished enclosure](/images/tayda-uv-finished.jpg)
