@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SVG to Tayda Converter</title>
+<style>
+  :root{
+    --blue:#2563eb;--blue-dark:#1d4ed8;--green:#16a34a;--green-dark:#15803d;
+    --red:#dc2626;--red-bg:#fef2f2;--red-border:#fecaca;
+    --green-bg:#f0fdf4;--green-border:#bbf7d0;
+    --blue-bg:#eff6ff;--blue-border:#bfdbfe;
+    --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-300:#d1d5db;
+    --gray-500:#6b7280;--gray-700:#374151;--gray-800:#1f2937;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--gray-50);color:var(--gray-800);
+  }
+  .container{max-width:1000px;margin:0 auto;padding:24px;}
+  .card{background:#fff;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.06);padding:24px;margin-bottom:24px;}
+  h1{font-size:24px;font-weight:700;margin:0 0 16px;}
+  h2{font-size:20px;font-weight:700;margin:0 0 16px;}
+  h3{font-size:15px;font-weight:600;margin:0 0 8px;}
+  .info-box{background:var(--blue-bg);border:1px solid var(--blue-border);border-radius:8px;padding:16px;margin-bottom:16px;}
+  .info-box ol{margin:8px 0 0 20px;padding:0;font-size:14px;color:#1e3a8a;}
+  .info-box ol li{margin-bottom:4px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
+  @media (max-width:600px){.grid2{grid-template-columns:1fr;}}
+  label{display:block;font-size:14px;font-weight:500;color:var(--gray-700);margin-bottom:8px;}
+  input[type=number], select{
+    width:100%;padding:8px 12px;border:1px solid var(--gray-300);border-radius:8px;font-size:14px;
+    background:#fff;color:var(--gray-800);
+  }
+  input[type=number]:focus, select:focus{outline:2px solid var(--blue);border-color:transparent;}
+  .upload-box{
+    border:2px dashed var(--gray-300);border-radius:8px;padding:24px;text-align:center;cursor:pointer;
+    transition:border-color .15s;display:block;
+  }
+  .upload-box:hover{border-color:var(--blue);}
+  .upload-box svg{margin:0 auto 8px;display:block;color:var(--gray-500);}
+  .upload-box p{font-size:14px;color:var(--gray-700);margin:0;}
+  .field{margin-bottom:24px;}
+  .viewbox-info{margin-top:8px;padding:12px;background:var(--gray-100);border:1px solid var(--gray-200);border-radius:8px;font-size:14px;color:var(--gray-700);}
+  .viewbox-info p{margin:2px 0;}
+  .msg{border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:14px;display:flex;gap:8px;align-items:flex-start;}
+  .msg.error{background:var(--red-bg);border:1px solid var(--red-border);color:var(--red);}
+  .msg svg{flex-shrink:0;margin-top:2px;}
+  .test-box{background:var(--green-bg);border:1px solid var(--green-border);border-radius:8px;padding:16px;margin-bottom:24px;font-size:14px;color:#166534;}
+  .test-box p{margin:4px 0;}
+  .test-ok{color:#15803d;font-weight:500;}
+  .test-fail{color:#b91c1c;font-weight:500;}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border:none;border-radius:8px;
+    font-size:14px;font-weight:500;cursor:pointer;color:#fff;
+  }
+  .btn svg{width:16px;height:16px;flex-shrink:0;}
+  .btn-green{background:var(--green);}
+  .btn-green:hover{background:var(--green-dark);}
+  .btn-blue{background:var(--blue);}
+  .btn-blue:hover{background:var(--blue-dark);}
+  .btn-row{display:flex;gap:12px;flex-wrap:wrap;}
+  table{width:100%;border-collapse:collapse;font-size:14px;}
+  th,td{border:1px solid var(--gray-300);padding:8px 16px;text-align:left;}
+  th{background:var(--gray-100);}
+  td.num, th.num{text-align:right;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+  tbody tr:nth-child(even){background:var(--gray-50);}
+  .table-wrap{overflow-x:auto;}
+  #fileName{font-weight:500;}
+  .hidden-render{position:absolute;left:-99999px;top:-99999px;visibility:hidden;}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="card">
+    <h1>SVG to Tayda Converter</h1>
+
+    <div class="info-box">
+      <h3>📄 Instructions:</h3>
+      <ol>
+        <li>Enter your actual panel dimensions below (from Affinity Designer)</li>
+        <li>Upload your SVG file</li>
+        <li>Verify the test shapes are correct (if using the test file)</li>
+        <li>Copy the tables to use in Tayda</li>
+      </ol>
+    </div>
+
+    <div class="grid2">
+      <div>
+        <label for="actualWidth">Actual Panel Width (mm)</label>
+        <input type="number" step="0.1" id="actualWidth" value="179">
+      </div>
+      <div>
+        <label for="actualHeight">Actual Panel Height (mm)</label>
+        <input type="number" step="0.1" id="actualHeight" value="29">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="side">Enclosure Side</label>
+      <select id="side">
+        <option value="A">A - Top</option>
+        <option value="B">B - Bottom</option>
+        <option value="C" selected>C - Front</option>
+        <option value="D">D - Back</option>
+        <option value="E">E - Left</option>
+        <option value="F">F - Right</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Upload SVG File</label>
+      <label class="upload-box" for="fileInput">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <p id="fileName">Click to upload SVG</p>
+      </label>
+      <input type="file" accept=".svg,image/svg+xml" id="fileInput" style="display:none;">
+      <div id="viewboxInfo" class="viewbox-info" style="display:none;"></div>
+    </div>
+
+    <div id="errorMsg"></div>
+    <div id="testBox"></div>
+    <div id="buttonRow"></div>
+  </div>
+
+  <div id="circlesCard" class="card" style="display:none;">
+    <h2>Circles (Tayda Holes Tab)</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Side</th><th class="num">X (mm)</th><th class="num">Y (mm)</th><th class="num">Diameter (mm)</th></tr></thead>
+        <tbody id="circlesBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="rectanglesCard" class="card" style="display:none;">
+    <h2>Rectangles (Tayda Shapes Tab)</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Side</th><th class="num">X (mm)</th><th class="num">Y (mm)</th><th class="num">Width (mm)</th><th class="num">Height (mm)</th></tr></thead>
+        <tbody id="rectanglesBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="hiddenRender" class="hidden-render"></div>
+</div>
+
+<script>
+(function(){
+  let circles = [];
+  let rectangles = [];
+  let lastSvgText = null;
+
+  const fileInput = document.getElementById('fileInput');
+  const fileNameEl = document.getElementById('fileName');
+  const viewboxInfo = document.getElementById('viewboxInfo');
+  const errorMsg = document.getElementById('errorMsg');
+  const testBox = document.getElementById('testBox');
+  const buttonRow = document.getElementById('buttonRow');
+  const circlesCard = document.getElementById('circlesCard');
+  const rectanglesCard = document.getElementById('rectanglesCard');
+  const circlesBody = document.getElementById('circlesBody');
+  const rectanglesBody = document.getElementById('rectanglesBody');
+  const hiddenRender = document.getElementById('hiddenRender');
+  const actualWidthInput = document.getElementById('actualWidth');
+  const actualHeightInput = document.getElementById('actualHeight');
+  const sideSelect = document.getElementById('side');
+
+  const iconAlert = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  const iconCopy = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+  const iconCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+  function round2(n){ return Math.round(n*100)/100; }
+
+  function resetUI(){
+    errorMsg.innerHTML = '';
+    testBox.innerHTML = '';
+    buttonRow.innerHTML = '';
+    circlesCard.style.display = 'none';
+    rectanglesCard.style.display = 'none';
+    circles = [];
+    rectangles = [];
+  }
+
+  function showError(msg){
+    errorMsg.innerHTML = '<div class="msg error">' + iconAlert + '<span>' + msg + '</span></div>';
+  }
+
+  fileInput.addEventListener('change', function(event){
+    const file = event.target.files[0];
+    if (!file) return;
+    fileNameEl.textContent = file.name;
+    resetUI();
+
+    const reader = new FileReader();
+    reader.onload = function(e){
+      lastSvgText = e.target.result;
+      try { processSVG(lastSvgText); }
+      catch(err){ showError('Error: ' + err.message); console.error(err); }
+    };
+    reader.readAsText(file);
+  });
+
+  actualWidthInput.addEventListener('input', function(){ if (lastSvgText) reprocess(); });
+  actualHeightInput.addEventListener('input', function(){ if (lastSvgText) reprocess(); });
+
+  function reprocess(){
+    resetUI();
+    try { processSVG(lastSvgText); }
+    catch(err){ showError('Error: ' + err.message); console.error(err); }
+  }
+
+  function processSVG(text){
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(text, 'image/svg+xml');
+
+    if (doc.querySelector('parsererror')) { showError('Invalid SVG file.'); return; }
+
+    const svg = doc.querySelector('svg');
+    if (!svg) { showError('No SVG element found.'); return; }
+
+    const viewBoxAttr = svg.getAttribute('viewBox');
+    if (!viewBoxAttr) { showError('SVG must have a viewBox attribute.'); return; }
+
+    const parts = viewBoxAttr.split(/\s+/).map(parseFloat);
+    const vbWidth = parts[2], vbHeight = parts[3];
+
+    const actualWidth = parseFloat(actualWidthInput.value);
+    const actualHeight = parseFloat(actualHeightInput.value);
+
+    viewboxInfo.style.display = 'block';
+    viewboxInfo.innerHTML =
+      '<p><strong>ViewBox:</strong> ' + vbWidth + ' × ' + vbHeight + ' px</p>' +
+      '<p><strong>Scale:</strong> ' + (actualWidth / vbWidth).toFixed(4) + ' mm/px</p>';
+
+    const scaleX = actualWidth / vbWidth;
+    const scaleY = actualHeight / vbHeight;
+    const centerX = actualWidth / 2;
+    const centerY = actualHeight / 2;
+
+    // Attach a live copy of the SVG to the DOM (hidden) so getBBox() resolves reliably
+    hiddenRender.innerHTML = '';
+    const importedSvg = document.importNode(svg, true);
+    hiddenRender.appendChild(importedSvg);
+
+    const extractedCircles = [];
+    const extractedRects = [];
+
+    importedSvg.querySelectorAll('circle').forEach(function(circle){
+      try {
+        const bbox = circle.getBBox();
+        const cx = (bbox.x + bbox.width/2) * scaleX;
+        const cy = (bbox.y + bbox.height/2) * scaleY;
+        const diameter = (bbox.width * scaleX + bbox.height * scaleY) / 2;
+        extractedCircles.push({ x: round2(cx - centerX), y: round2(centerY - cy), diameter: round2(diameter) });
+      } catch(e){ console.warn('circle error', e); }
+    });
+
+    importedSvg.querySelectorAll('ellipse').forEach(function(ellipse){
+      try {
+        const bbox = ellipse.getBBox();
+        const cx = (bbox.x + bbox.width/2) * scaleX;
+        const cy = (bbox.y + bbox.height/2) * scaleY;
+        const diameter = (bbox.width * scaleX + bbox.height * scaleY) / 2;
+        extractedCircles.push({ x: round2(cx - centerX), y: round2(centerY - cy), diameter: round2(diameter) });
+      } catch(e){ console.warn('ellipse error', e); }
+    });
+
+    importedSvg.querySelectorAll('rect').forEach(function(rect){
+      try {
+        const bbox = rect.getBBox();
+        const cx = (bbox.x + bbox.width/2) * scaleX;
+        const cy = (bbox.y + bbox.height/2) * scaleY;
+        const width = bbox.width * scaleX;
+        const height = bbox.height * scaleY;
+        extractedRects.push({ x: round2(cx - centerX), y: round2(centerY - cy), width: round2(width), height: round2(height) });
+      } catch(e){ console.warn('rect error', e); }
+    });
+
+    if (extractedCircles.length === 0 && extractedRects.length === 0){
+      showError('No circles or rectangles found.');
+      return;
+    }
+
+    circles = extractedCircles;
+    rectangles = extractedRects;
+
+    renderResults();
+  }
+
+  function findNear(list, x, y, tol){
+    return list.find(function(item){ return Math.abs(item.x - x) < tol && Math.abs(item.y - y) < tol; });
+  }
+
+  function renderResults(){
+    const side = sideSelect.value;
+
+    const testCircle = findNear(circles, 12.5, 9, 0.5);
+    const testRect = findNear(rectangles, 114.3, 5.5, 0.5);
+
+    let testHtml = '<div class="test-box"><h3>Test Verification:</h3>';
+    testHtml += '<p><strong>Looking for circle at (12.5, 9), diameter 7.7mm:</strong></p>';
+    testHtml += testCircle
+      ? '<p class="test-ok">✓ Found: x=' + testCircle.x + ', y=' + testCircle.y + ', d=' + testCircle.diameter + '</p>'
+      : '<p class="test-fail">✗ Not found</p>';
+    testHtml += '<p style="margin-top:8px;"><strong>Looking for rectangle at (114.3, 5.5), 32×5mm:</strong></p>';
+    testHtml += testRect
+      ? '<p class="test-ok">✓ Found: x=' + testRect.x + ', y=' + testRect.y + ', w=' + testRect.width + ', h=' + testRect.height + '</p>'
+      : '<p class="test-fail">✗ Not found</p>';
+    testHtml += '</div>';
+    testBox.innerHTML = testHtml;
+
+    let btnHtml = '<div class="btn-row">';
+    if (circles.length > 0) btnHtml += '<button class="btn btn-green" id="copyCirclesBtn">' + iconCopy + '<span>Copy Circles</span></button>';
+    if (rectangles.length > 0) btnHtml += '<button class="btn btn-blue" id="copyRectsBtn">' + iconCopy + '<span>Copy Rectangles</span></button>';
+    btnHtml += '</div>';
+    buttonRow.innerHTML = btnHtml;
+
+    const copyCirclesBtn = document.getElementById('copyCirclesBtn');
+    if (copyCirclesBtn) copyCirclesBtn.addEventListener('click', function(){ copyTable(generateCirclesTable(), copyCirclesBtn, 'Copy Circles'); });
+
+    const copyRectsBtn = document.getElementById('copyRectsBtn');
+    if (copyRectsBtn) copyRectsBtn.addEventListener('click', function(){ copyTable(generateRectanglesTable(), copyRectsBtn, 'Copy Rectangles'); });
+
+    if (circles.length > 0){
+      circlesCard.style.display = 'block';
+      circlesBody.innerHTML = circles.map(function(c,i){
+        return '<tr><td>' + (i+1) + '</td><td>' + side + '</td><td class="num">' + c.x + '</td><td class="num">' + c.y + '</td><td class="num">' + c.diameter + '</td></tr>';
+      }).join('');
+    } else {
+      circlesCard.style.display = 'none';
+    }
+
+    if (rectangles.length > 0){
+      rectanglesCard.style.display = 'block';
+      rectanglesBody.innerHTML = rectangles.map(function(r,i){
+        return '<tr><td>' + (i+1) + '</td><td>' + side + '</td><td class="num">' + r.x + '</td><td class="num">' + r.y + '</td><td class="num">' + r.width + '</td><td class="num">' + r.height + '</td></tr>';
+      }).join('');
+    } else {
+      rectanglesCard.style.display = 'none';
+    }
+  }
+
+  sideSelect.addEventListener('change', function(){ if (circles.length || rectangles.length) renderResults(); });
+
+  function generateCirclesTable(){
+    const side = sideSelect.value;
+    let table = 'Circle #\tSide\tX (mm)\tY (mm)\tDiameter (mm)\n';
+    circles.forEach(function(c,i){ table += (i+1) + '\t' + side + '\t' + c.x + '\t' + c.y + '\t' + c.diameter + '\n'; });
+    return table;
+  }
+
+  function generateRectanglesTable(){
+    const side = sideSelect.value;
+    let table = 'Rectangle #\tSide\tX (mm)\tY (mm)\tWidth (mm)\tHeight (mm)\n';
+    rectangles.forEach(function(r,i){ table += (i+1) + '\t' + side + '\t' + r.x + '\t' + r.y + '\t' + r.width + '\t' + r.height + '\n'; });
+    return table;
+  }
+
+  function copyTable(text, btn, originalLabel){
+    const original = btn.innerHTML;
+    const showCopied = function(){
+      btn.innerHTML = iconCheck + '<span>Copied!</span>';
+      setTimeout(function(){ btn.innerHTML = original; }, 2000);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(showCopied).catch(function(){ fallbackCopy(text, showCopied); });
+    } else {
+      fallbackCopy(text, showCopied);
+    }
+  }
+
+  function fallbackCopy(text, cb){
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch(e){}
+    document.body.removeChild(ta);
+    if (cb) cb();
+  }
+})();
+</script>
+</body>
+</html>
