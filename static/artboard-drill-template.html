@@ -47,10 +47,8 @@
   .msg{border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:14px;display:flex;gap:8px;align-items:flex-start;}
   .msg.error{background:var(--red-bg);border:1px solid var(--red-border);color:var(--red);}
   .msg svg{flex-shrink:0;margin-top:2px;}
-  .test-box{background:var(--green-bg);border:1px solid var(--green-border);border-radius:8px;padding:16px;margin-bottom:24px;font-size:14px;color:#166534;}
-  .test-box p{margin:4px 0;}
-  .test-ok{color:#15803d;font-weight:500;}
-  .test-fail{color:#b91c1c;font-weight:500;}
+  .summary-box{background:var(--green-bg);border:1px solid var(--green-border);border-radius:8px;padding:16px;margin-bottom:24px;font-size:14px;color:#166534;}
+  .summary-box p{margin:4px 0;}
   .btn{
     display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border:none;border-radius:8px;
     font-size:14px;font-weight:500;cursor:pointer;color:#fff;
@@ -61,6 +59,12 @@
   .btn-blue{background:var(--blue);}
   .btn-blue:hover{background:var(--blue-dark);}
   .btn-row{display:flex;gap:12px;flex-wrap:wrap;}
+  .btn-small{
+    background:var(--gray-100);border:1px solid var(--gray-300);color:var(--gray-700);
+    padding:6px 12px;border-radius:8px;font-size:13px;cursor:pointer;
+  }
+  .btn-small:hover{background:var(--gray-200);}
+  input[readonly]{background:var(--gray-100);color:var(--gray-700);cursor:not-allowed;}
   table{width:100%;border-collapse:collapse;font-size:14px;}
   th,td{border:1px solid var(--gray-300);padding:8px 16px;text-align:left;}
   th{background:var(--gray-100);}
@@ -80,34 +84,52 @@
     <div class="info-box">
       <h3>📄 Instructions:</h3>
       <ol>
-        <li>Enter your actual panel dimensions below (from Affinity Designer)</li>
+        <li>Pick your enclosure size and side — the artboard dimensions fill in automatically from Tayda's size table</li>
+        <li>If your Affinity document doesn't match the table's orientation, use "Swap width / height", or choose "Custom" to enter dimensions manually</li>
         <li>Upload your SVG file</li>
-        <li>Verify the test shapes are correct (if using the test file)</li>
         <li>Copy the tables to use in Tayda</li>
       </ol>
     </div>
 
-    <div class="grid2">
-      <div>
-        <label for="actualWidth">Actual Panel Width (mm)</label>
-        <input type="number" step="0.1" id="actualWidth" value="179">
-      </div>
-      <div>
-        <label for="actualHeight">Actual Panel Height (mm)</label>
-        <input type="number" step="0.1" id="actualHeight" value="29">
-      </div>
+    <div class="field">
+      <label for="enclosureSelect">Enclosure Size</label>
+      <select id="enclosureSelect">
+        <option value="125B">125B</option>
+        <option value="1590A">1590A</option>
+        <option value="1590B">1590B</option>
+        <option value="1590BB">1590BB</option>
+        <option value="1590BB2">1590BB2</option>
+        <option value="1590XX">1590XX</option>
+        <option value="1590DD">1590DD</option>
+        <option value="1590D">1590D</option>
+        <option value="custom">Custom (enter manually)</option>
+      </select>
     </div>
 
     <div class="field">
       <label for="side">Enclosure Side</label>
       <select id="side">
-        <option value="A">A - Top</option>
-        <option value="B">B - Bottom</option>
-        <option value="C" selected>C - Front</option>
-        <option value="D">D - Back</option>
-        <option value="E">E - Left</option>
-        <option value="F">F - Right</option>
+        <option value="A" selected>A - Face</option>
+        <option value="B">B - Top</option>
+        <option value="C">C - Left</option>
+        <option value="D">D - Bottom</option>
+        <option value="E">E - Right</option>
       </select>
+    </div>
+
+    <div class="grid2">
+      <div>
+        <label for="actualWidth">Panel Width (mm)</label>
+        <input type="number" step="0.01" id="actualWidth" value="62">
+      </div>
+      <div>
+        <label for="actualHeight">Panel Height (mm)</label>
+        <input type="number" step="0.01" id="actualHeight" value="117">
+      </div>
+    </div>
+    <div class="field" style="margin-top:-12px;">
+      <p id="dimsSourceNote" style="font-size:13px;color:var(--gray-500);margin:0 0 8px;"></p>
+      <button type="button" id="swapDimsBtn" class="btn-small">⇄ Swap width / height</button>
     </div>
 
     <div class="field">
@@ -121,7 +143,7 @@
     </div>
 
     <div id="errorMsg"></div>
-    <div id="testBox"></div>
+    <div id="summaryBox"></div>
     <div id="buttonRow"></div>
   </div>
 
@@ -153,12 +175,30 @@
   let circles = [];
   let rectangles = [];
   let lastSvgText = null;
+  let swapped = false;
 
+  // Artboard sizes (mm) from https://www.taydaelectronics.com/uv-printing-service-guide-v1
+  // [width, height] as listed in Tayda's table for each side.
+  const ENCLOSURES = {
+    '125B':    { A: [62, 117],   B: [57, 33],  C: [33, 111], D: [57, 33],  E: [33, 111] },
+    '1590A':   { A: [35, 89],    B: [30, 25],  C: [25, 83],  D: [30, 25],  E: [25, 83] },
+    '1590B':   { A: [56, 108.5], B: [52, 24],  C: [24, 103], D: [52, 24],  E: [24, 103] },
+    '1590BB':  { A: [90, 115.5], B: [84, 29],  C: [29, 110], D: [84, 29],  E: [29, 110] },
+    '1590BB2': { A: [90, 115.5], B: [84, 32],  C: [32, 110], D: [84, 32],  E: [32, 110] },
+    '1590XX':  { A: [117, 141],  B: [112, 32], C: [32, 135], D: [112, 32], E: [32, 135] },
+    '1590DD':  { A: [117, 185],  B: [110, 29], C: [29, 179], D: [110, 29], E: [29, 179] },
+    '1590D':   { A: [113, 182],  B: [105, 48], C: [48, 172], D: [105, 48], E: [48, 172] }
+  };
+  const SIDE_NAMES = { A: 'Face', B: 'Top', C: 'Left', D: 'Bottom', E: 'Right' };
+
+  const enclosureSelect = document.getElementById('enclosureSelect');
+  const swapDimsBtn = document.getElementById('swapDimsBtn');
+  const dimsSourceNote = document.getElementById('dimsSourceNote');
   const fileInput = document.getElementById('fileInput');
   const fileNameEl = document.getElementById('fileName');
   const viewboxInfo = document.getElementById('viewboxInfo');
   const errorMsg = document.getElementById('errorMsg');
-  const testBox = document.getElementById('testBox');
+  const summaryBox = document.getElementById('summaryBox');
   const buttonRow = document.getElementById('buttonRow');
   const circlesCard = document.getElementById('circlesCard');
   const rectanglesCard = document.getElementById('rectanglesCard');
@@ -177,7 +217,7 @@
 
   function resetUI(){
     errorMsg.innerHTML = '';
-    testBox.innerHTML = '';
+    summaryBox.innerHTML = '';
     buttonRow.innerHTML = '';
     circlesCard.style.display = 'none';
     rectanglesCard.style.display = 'none';
@@ -206,6 +246,47 @@
 
   actualWidthInput.addEventListener('input', function(){ if (lastSvgText) reprocess(); });
   actualHeightInput.addEventListener('input', function(){ if (lastSvgText) reprocess(); });
+
+  function updateDimensionFields(){
+    const encKey = enclosureSelect.value;
+    const sideKey = sideSelect.value;
+
+    if (encKey === 'custom') {
+      actualWidthInput.readOnly = false;
+      actualHeightInput.readOnly = false;
+      dimsSourceNote.textContent = 'Enter your own artboard dimensions.';
+    } else {
+      const dims = ENCLOSURES[encKey][sideKey];
+      let w = dims[0], h = dims[1];
+      if (swapped) { const t = w; w = h; h = t; }
+      actualWidthInput.value = w;
+      actualHeightInput.value = h;
+      actualWidthInput.readOnly = true;
+      actualHeightInput.readOnly = true;
+      dimsSourceNote.textContent = "From Tayda's size table: " + encKey + ', Side ' + sideKey +
+        ' (' + SIDE_NAMES[sideKey] + ')' + (swapped ? ' — swapped' : '') + '.';
+    }
+
+    if (lastSvgText) reprocess();
+  }
+
+  enclosureSelect.addEventListener('change', function(){ swapped = false; updateDimensionFields(); });
+  sideSelect.addEventListener('change', updateDimensionFields);
+
+  swapDimsBtn.addEventListener('click', function(){
+    if (enclosureSelect.value === 'custom') {
+      const w = actualWidthInput.value, h = actualHeightInput.value;
+      actualWidthInput.value = h;
+      actualHeightInput.value = w;
+      if (lastSvgText) reprocess();
+    } else {
+      swapped = !swapped;
+      updateDimensionFields();
+    }
+  });
+
+  // Initialize fields for the default enclosure/side on load
+  updateDimensionFields();
 
   function reprocess(){
     resetUI();
@@ -291,27 +372,15 @@
     renderResults();
   }
 
-  function findNear(list, x, y, tol){
-    return list.find(function(item){ return Math.abs(item.x - x) < tol && Math.abs(item.y - y) < tol; });
-  }
-
   function renderResults(){
     const side = sideSelect.value;
+    const w = parseFloat(actualWidthInput.value);
+    const h = parseFloat(actualHeightInput.value);
 
-    const testCircle = findNear(circles, 12.5, 9, 0.5);
-    const testRect = findNear(rectangles, 114.3, 5.5, 0.5);
-
-    let testHtml = '<div class="test-box"><h3>Test Verification:</h3>';
-    testHtml += '<p><strong>Looking for circle at (12.5, 9), diameter 7.7mm:</strong></p>';
-    testHtml += testCircle
-      ? '<p class="test-ok">✓ Found: x=' + testCircle.x + ', y=' + testCircle.y + ', d=' + testCircle.diameter + '</p>'
-      : '<p class="test-fail">✗ Not found</p>';
-    testHtml += '<p style="margin-top:8px;"><strong>Looking for rectangle at (114.3, 5.5), 32×5mm:</strong></p>';
-    testHtml += testRect
-      ? '<p class="test-ok">✓ Found: x=' + testRect.x + ', y=' + testRect.y + ', w=' + testRect.width + ', h=' + testRect.height + '</p>'
-      : '<p class="test-fail">✗ Not found</p>';
-    testHtml += '</div>';
-    testBox.innerHTML = testHtml;
+    summaryBox.innerHTML =
+      '<div class="summary-box"><h3>Extraction Summary:</h3>' +
+      '<p>Found <strong>' + circles.length + '</strong> circle(s) and <strong>' + rectangles.length +
+      '</strong> rectangle(s), calculated from a ' + w + ' × ' + h + 'mm panel (Side ' + side + ').</p></div>';
 
     let btnHtml = '<div class="btn-row">';
     if (circles.length > 0) btnHtml += '<button class="btn btn-green" id="copyCirclesBtn">' + iconCopy + '<span>Copy Circles</span></button>';
@@ -320,10 +389,10 @@
     buttonRow.innerHTML = btnHtml;
 
     const copyCirclesBtn = document.getElementById('copyCirclesBtn');
-    if (copyCirclesBtn) copyCirclesBtn.addEventListener('click', function(){ copyTable(generateCirclesTable(), copyCirclesBtn, 'Copy Circles'); });
+    if (copyCirclesBtn) copyCirclesBtn.addEventListener('click', function(){ copyTable(generateCirclesTable(), copyCirclesBtn); });
 
     const copyRectsBtn = document.getElementById('copyRectsBtn');
-    if (copyRectsBtn) copyRectsBtn.addEventListener('click', function(){ copyTable(generateRectanglesTable(), copyRectsBtn, 'Copy Rectangles'); });
+    if (copyRectsBtn) copyRectsBtn.addEventListener('click', function(){ copyTable(generateRectanglesTable(), copyRectsBtn); });
 
     if (circles.length > 0){
       circlesCard.style.display = 'block';
@@ -344,8 +413,6 @@
     }
   }
 
-  sideSelect.addEventListener('change', function(){ if (circles.length || rectangles.length) renderResults(); });
-
   function generateCirclesTable(){
     const side = sideSelect.value;
     let table = 'Circle #\tSide\tX (mm)\tY (mm)\tDiameter (mm)\n';
@@ -360,7 +427,7 @@
     return table;
   }
 
-  function copyTable(text, btn, originalLabel){
+  function copyTable(text, btn){
     const original = btn.innerHTML;
     const showCopied = function(){
       btn.innerHTML = iconCheck + '<span>Copied!</span>';
